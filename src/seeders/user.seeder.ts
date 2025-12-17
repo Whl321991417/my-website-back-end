@@ -31,6 +31,8 @@ async function seedUsers() {
       console.log('User2 created successfully');
     } else {
       console.log('User2 already exists');
+      console.log("ceshi");
+
     }
   } catch (error) {
     console.error('Error seeding users:', error);
