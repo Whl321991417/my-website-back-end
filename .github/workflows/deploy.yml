@@ -1,0 +1,42 @@
+# .github/workflows/deploy.yml 
+name: 自动部署到华为云服务器  # 工作流名称，可自定义 
+
+# 触发条件：当代码push到main分支时，自动执行这个工作流 
+on: 
+  push: 
+    branches: [ main ]  
+
+# 工作流任务 
+jobs: 
+  deploy: 
+    runs-on: ubuntu-latest  # GitHub提供的运行环境（不用改） 
+
+    steps: 
+      # 步骤1：拉取GitHub仓库的最新代码 
+      - name: 拉取代码 
+        uses: actions/checkout@v4 
+
+      # 步骤2：配置SSH，连接到华为云服务器 
+      - name: 配置SSH连接 
+        uses: webfactory/ssh-agent@v0.9.0 
+        with: 
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}  
+
+      # 步骤3：连接服务器，执行部署命令（核心步骤） 
+      - name: 连接服务器并部署 
+        run: | 
+          # 连接服务器，执行以下命令（一行一个操作） 
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} << 'EOF' 
+             
+            cd /my-website-back-end 
+            
+            # 拉取GitHub仓库的最新代码 
+            git pull origin main  
+            
+            # 停止旧容器，重新构建并启动（适配你的Docker部署方式） 
+            docker-compose down 
+            docker-compose up -d --build 
+            
+            # 可选：查看部署状态（方便调试） 
+            docker-compose ps 
+          EOF
