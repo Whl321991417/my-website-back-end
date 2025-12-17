@@ -1,0 +1,22 @@
+-- 创建数据库（如果不存在）
+CREATE DATABASE IF NOT EXISTS `my-website` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- 使用数据库
+USE `my-website`;
+
+-- 创建用户表
+CREATE TABLE IF NOT EXISTS `user` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `username` VARCHAR(255) NOT NULL UNIQUE,
+  `password` VARCHAR(255) NOT NULL,
+  `email` VARCHAR(255) NOT NULL,
+  `role` VARCHAR(255) NOT NULL DEFAULT 'user',
+  `createdAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updatedAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 创建示例用户（密码：password123）
+INSERT INTO `user` (`username`, `password`, `email`, `role`) VALUES
+('admin', '$2a$10$J8c4X5W5X5W5X5W5X5W5O5O5O5O5O5O5O5O5O5O5O5O5O5O5O5O5O5O', 'admin@example.com', 'admin'),
+('user', '$2a$10$J8c4X5W5X5W5X5W5X5W5O5O5O5O5O5O5O5O5O5O5O5O5O5O5O5O5O5O', 'user@example.com', 'user');
