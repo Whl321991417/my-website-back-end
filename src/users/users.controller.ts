@@ -5,11 +5,11 @@ import { ApiTags, ApiOperation, ApiBody, ApiOkResponse, ApiUnauthorizedResponse 
 @ApiTags('users')
 @Controller('api/users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly usersService: UsersService) { }
 
   @ApiOperation({ summary: 'User login' })
   @ApiBody({
-    description: 'Login credentials',
+    description: '登录凭证',
     schema: {
       type: 'object',
       properties: {
