@@ -6,8 +6,20 @@ services:
     restart: always
     ports:
       - "3000:3000"
-    env_file:
-      - .env
+    environment:
+      # 数据库配置
+      - DB_TYPE=mysql
+      - DB_HOST=123.60.102.168
+      - DB_PORT=3306
+      - DB_USERNAME=my-website
+      - DB_PASSWORD=root123
+      - DB_DATABASE=my-website
+      # 服务器配置
+      - PORT=3000
+      # 环境配置
+      - NODE_ENV=development
+    volumes:
+      - ./uploads:/app/uploads  # 映射uploads目录，确保图片持久化
     networks:
       - my-website-network
 
