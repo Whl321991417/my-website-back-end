@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
@@ -14,10 +13,6 @@ import { Image } from './images/image.entity';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      envFilePath: ['.env', '.env.production'],
-      isGlobal: true,
-    }),
     TypeOrmModule.forRoot({
       type: process.env.DB_TYPE as any || 'mysql',
       host: process.env.DB_HOST || 'localhost',

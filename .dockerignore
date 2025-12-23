@@ -9,7 +9,7 @@ dist
 .gitignore
 
 # 环境变量文件
-.env
+# .env
 
 # 测试目录
 test
