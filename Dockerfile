@@ -27,6 +27,9 @@ COPY --from=build /app/dist ./dist
 COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/package*.json ./
 
+# 创建uploads目录，确保持久化存储
+RUN mkdir -p /app/uploads
+
 # 暴露端口
 EXPOSE 3000
 
