@@ -7,7 +7,7 @@ async function bootstrap() {
 
   // 配置CORS
   app.enableCors({
-    origin: ['http://localhost:5173', 'http://localhost:3000'],
+    origin: '*',
     credentials: true,
   });
 
