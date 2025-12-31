@@ -8,6 +8,7 @@ import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { HomeModulesModule } from './home-modules/home-modules.module';
 import { ImagesModule } from './images/images.module';
+import { MailModule } from './mail/mail.module';
 import { User } from './users/user.entity';
 import { HomeModule } from './home-modules/home-module.entity';
 import { Image } from './images/image.entity';
@@ -42,6 +43,7 @@ import { Image } from './images/image.entity';
     UsersModule,
     HomeModulesModule,
     ImagesModule,
+    MailModule,
   ],
   controllers: [AppController],
   providers: [AppService],

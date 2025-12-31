@@ -18,6 +18,12 @@ services:
       - PORT=3000
       # 环境配置
       - NODE_ENV=development
+      # 邮件配置
+      - MAIL_HOST=smtp.163.com
+      - MAIL_PORT=465
+      - MAIL_USER=h321991417@163.com
+      - MAIL_PASS=GPTajdXjGHtmayQL
+      - MAIL_FROM=万汇六 <h321991417@163.com>
     volumes:
       - ./uploads:/app/uploads  # 映射uploads目录，确保图片持久化
     networks:
