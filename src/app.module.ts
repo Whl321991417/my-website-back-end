@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
@@ -13,12 +14,17 @@ import { Image } from './images/image.entity';
 
 @Module({
   imports: [
+    // 加载环境变量配置
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: '.env',
+    }),
     TypeOrmModule.forRoot({
       type: process.env.DB_TYPE as any || 'mysql',
-      host: process.env.DB_HOST || 'localhost',
+      host: process.env.DB_HOST || '123.60.102.168',
       port: parseInt(process.env.DB_PORT || '3306', 10),
-      username: process.env.DB_USERNAME || 'root',
-      password: process.env.DB_PASSWORD || '',
+      username: process.env.DB_USERNAME || 'my-website',
+      password: process.env.DB_PASSWORD || 'root123',
       database: process.env.DB_DATABASE || 'my-website',
       entities: [User, HomeModule, Image],
       synchronize: true,

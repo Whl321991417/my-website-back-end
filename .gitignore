@@ -42,6 +42,7 @@ config/config.local.ts
 
 # environment config
 *.local
+.env
 
 # uploads directory
 /uploads
