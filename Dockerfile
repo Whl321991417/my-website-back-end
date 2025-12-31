@@ -9,10 +9,9 @@ WORKDIR /app
 COPY package*.json ./
 
 # 安装所有依赖，包括开发依赖（用于构建）
-# 使用 npm ci 替代 npm install，提高速度和可靠性
 # 配置国内镜像源，加速依赖下载
 RUN npm config set registry https://registry.npmmirror.com && \
-    npm ci --legacy-peer-deps --no-cache
+    npm install --legacy-peer-deps --no-cache
 
 # 复制源代码
 COPY . .
@@ -33,7 +32,7 @@ COPY --from=build /app/package*.json ./
 # 安装生产环境依赖，不包含开发依赖
 # 配置国内镜像源，加速依赖下载
 RUN npm config set registry https://registry.npmmirror.com && \
-    npm ci --production --legacy-peer-deps --no-cache
+    npm install --production --legacy-peer-deps --no-cache
 
 # 创建uploads目录，确保持久化存储
 RUN mkdir -p /app/uploads
