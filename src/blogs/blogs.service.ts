@@ -18,7 +18,11 @@ export class BlogsService {
 
   // 获取所有博客
   async findAll(): Promise<Blog[]> {
-    return this.blogRepository.find();
+    return this.blogRepository.find({
+      order: {
+        createdAt: 'DESC',
+      },
+    });
   }
 
   // 根据ID获取博客

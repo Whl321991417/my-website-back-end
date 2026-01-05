@@ -10,10 +10,12 @@ import { HomeModulesModule } from './home-modules/home-modules.module';
 import { ImagesModule } from './images/images.module';
 import { MailModule } from './mail/mail.module';
 import { BlogsModule } from './blogs/blogs.module';
+import { AiAgentsModule } from './ai-agents/ai-agents.module';
 import { User } from './users/user.entity';
 import { HomeModule } from './home-modules/home-module.entity';
 import { Image } from './images/image.entity';
 import { Blog } from './blogs/blog.entity';
+import { AiAgent } from './ai-agents/ai-agent.entity';
 
 @Module({
   imports: [
@@ -29,7 +31,7 @@ import { Blog } from './blogs/blog.entity';
       username: process.env.DB_USERNAME || 'my-website',
       password: process.env.DB_PASSWORD || 'root123',
       database: process.env.DB_DATABASE || 'my-website',
-      entities: [User, HomeModule, Image, Blog],
+      entities: [User, HomeModule, Image, Blog, AiAgent],
       synchronize: true,
       // 添加连接池配置
       poolSize: 10,
@@ -47,6 +49,7 @@ import { Blog } from './blogs/blog.entity';
     ImagesModule,
     MailModule,
     BlogsModule,
+    AiAgentsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
