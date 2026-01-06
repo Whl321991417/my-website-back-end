@@ -60,10 +60,21 @@ export class BlogsController {
   }
 
   @ApiOperation({ summary: 'Get blogs by tags' })
-  @Get('tags/:tags')
-  async getBlogsByTags(@Param('tags') tags: string, @Res() res) {
-    const tagArray = tags.split(',');
-    const blogs = await this.blogsService.findByTags(tagArray);
+  @ApiBody({
+    description: 'Tags and number of blogs to retrieve',
+    schema: {
+      type: 'object',
+      properties: {
+        tags: { type: 'array', items: { type: 'string' }, description: 'Array of tags' },
+        number: { type: 'number', default: 3, description: 'Number of blogs to retrieve' },
+      },
+      required: ['tags'],
+    },
+  })
+  @Post('tags')
+  async getBlogsByTags(@Body() body: { tags: string[]; number?: number }, @Res() res) {
+    const { tags, number = 3 } = body;
+    const blogs = await this.blogsService.findByTags(tags, number);
     return res.status(HttpStatus.OK).json({
       message: 'Blogs retrieved successfully',
       blogs,

@@ -7,12 +7,22 @@ import { ApiTags, ApiOperation, ApiBody, ApiOkResponse, ApiNotFoundResponse } fr
 export class HomeModulesController {
   constructor(private readonly homeModulesService: HomeModulesService) {}
 
-  @ApiOperation({ summary: 'Get all home modules' })
+  @ApiOperation({ summary: 'Get all home modules with status' })
   @Get()
   async getAllHomeModules(@Res() res) {
-    const modules = await this.homeModulesService.findAll();
+    const modules = await this.homeModulesService.findAllWithStatus();
     return res.status(HttpStatus.OK).json({
       message: 'Home modules retrieved successfully',
+      modules,
+    });
+  }
+
+  @ApiOperation({ summary: 'Get active home modules' })
+  @Get('/active')
+  async getActiveHomeModules(@Res() res) {
+    const modules = await this.homeModulesService.findAll();
+    return res.status(HttpStatus.OK).json({
+      message: 'Active home modules retrieved successfully',
       modules,
     });
   }

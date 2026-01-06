@@ -11,7 +11,22 @@ export class HomeModulesService {
   ) { }
 
   async findAll(): Promise<HomeModule[]> {
-    return this.homeModulesRepository.find();
+    return this.homeModulesRepository.find({
+      where: {
+        isActive: true,
+      },
+      order: {
+        createdAt: 'DESC',
+      },
+    });
+  }
+
+  async findAllWithStatus(): Promise<HomeModule[]> {
+    return this.homeModulesRepository.find({
+      order: {
+        createdAt: 'DESC',
+      },
+    });
   }
 
   async findById(id: number): Promise<HomeModule | null> {

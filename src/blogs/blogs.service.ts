@@ -32,12 +32,35 @@ export class BlogsService {
   }
 
   // 根据标签获取博客
-  async findByTags(tags: string[], limit: number = 4): Promise<Blog[]> {
-    return this.blogRepository
-      .createQueryBuilder('blog')
-      .where('blog.tags && :tags', { tags })
-      .limit(limit)
-      .getMany();
+  async findByTags(tags: string[], number: number = 3): Promise<Blog[]> {
+    // 搜索数据库中所有包含其中任意一个标签的文章
+    const queryBuilder = this.blogRepository.createQueryBuilder('blog');
+
+    // 构建 WHERE 条件，使用 OR 连接多个 LIKE 检查
+    // 注意：tags列是simple-array类型，TypeORM会将其存储为逗号分隔的字符串
+    if (tags && tags.length > 0) {
+      const conditions = tags.map((tag, index) => {
+        // 使用LIKE操作符查询包含特定标签的记录
+        // 前后加上逗号是为了确保精确匹配，避免部分匹配（如"前端"匹配"前端开发"）
+        return `CONCAT(',', blog.tags, ',') LIKE :tag${index}`;
+      });
+
+      const whereClause = conditions.join(' OR ');
+      queryBuilder.where(whereClause);
+
+      // 设置参数，为每个标签添加前后逗号，并使用不同的参数名
+      tags.forEach((tag, index) => {
+        queryBuilder.setParameter(`tag${index}`, `%,${tag},%`);
+      });
+    }
+
+    const blogs = await queryBuilder.getMany();
+
+    // 随机排序
+    const shuffledBlogs = [...blogs].sort(() => Math.random() - 0.5);
+
+    // 选中指定数量的文章返回
+    return shuffledBlogs.slice(0, number);
   }
 
   // 更新博客
