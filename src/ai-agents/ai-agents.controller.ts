@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Res, HttpStatus, Get, Param, Put, Delete } from '@nestjs/common';
+import { Controller, Post, Body, Res, HttpStatus, Get, Param, Put, Delete, Query } from '@nestjs/common';
 import { AiAgentsService } from './ai-agents.service';
 import { ApiTags, ApiOperation, ApiBody, ApiOkResponse } from '@nestjs/swagger';
 
@@ -9,8 +9,10 @@ export class AiAgentsController {
 
   @ApiOperation({ summary: 'Get all AI agents' })
   @Get()
-  async getAllAiAgents(@Res() res) {
-    const aiAgents = await this.aiAgentsService.findAll();
+  async getAllAiAgents(@Res() res, @Query('onlyActive') onlyActive?: string) {
+    // 转换onlyActive参数为布尔值，仅处理字符串类型
+    const isOnlyActive = onlyActive === 'true';
+    const aiAgents = await this.aiAgentsService.findAll(isOnlyActive);
     return res.status(HttpStatus.OK).json({
       message: 'AI agents retrieved successfully',
       aiAgents,
@@ -43,15 +45,22 @@ export class AiAgentsController {
         image: { type: 'string' },
         description: { type: 'string' },
         link: { type: 'string' },
+        author: { type: 'string' },
         isActive: { type: 'boolean', default: true },
+        baseUrl: { type: 'string' },
+        accessKey: { type: 'string' },
+        appID: { type: 'string' },
+        isSupportFileUpload: { type: 'boolean', default: false },
+        isSupportImageUpload: { type: 'boolean', default: false },
+        isSupportDeepThinking: { type: 'boolean', default: false },
       },
-      required: ['name', 'image', 'description', 'link'],
+      required: ['name', 'image', 'description', 'link', 'appID'],
     },
   })
   @Post()
-  async createAiAgent(@Body() body: { name: string; image: string; description: string; link: string; isActive?: boolean }, @Res() res) {
-    const { name, image, description, link, isActive = true } = body;
-    const aiAgent = await this.aiAgentsService.create({ name, image, description, link, isActive });
+  async createAiAgent(@Body() body: { name: string; image: string; description: string; link: string; author?: string; isActive?: boolean; baseUrl?: string; accessKey?: string; appID: string; isSupportFileUpload?: boolean; isSupportImageUpload?: boolean; isSupportDeepThinking?: boolean }, @Res() res) {
+    const { name, image, description, link, author = '南风', isActive = true, baseUrl, accessKey, appID, isSupportFileUpload = false, isSupportImageUpload = false, isSupportDeepThinking = false } = body;
+    const aiAgent = await this.aiAgentsService.create({ name, image, description, link, author, isActive, baseUrl, accessKey, appID, isSupportFileUpload, isSupportImageUpload, isSupportDeepThinking });
     return res.status(HttpStatus.CREATED).json({
       message: 'AI agent created successfully',
       aiAgent,
@@ -68,13 +77,20 @@ export class AiAgentsController {
         image: { type: 'string' },
         description: { type: 'string' },
         link: { type: 'string' },
+        author: { type: 'string' },
         isActive: { type: 'boolean' },
+        baseUrl: { type: 'string' },
+        accessKey: { type: 'string' },
+        appID: { type: 'string' },
+        isSupportFileUpload: { type: 'boolean' },
+        isSupportImageUpload: { type: 'boolean' },
+        isSupportDeepThinking: { type: 'boolean' },
       },
       required: [],
     },
   })
   @Put(':id')
-  async updateAiAgent(@Param('id') id: number, @Body() body: Partial<{ name: string; image: string; description: string; link: string; isActive: boolean }>, @Res() res) {
+  async updateAiAgent(@Param('id') id: number, @Body() body: Partial<{ name: string; image: string; description: string; link: string; author: string; isActive: boolean; baseUrl: string; accessKey: string; appID: string; isSupportFileUpload: boolean; isSupportImageUpload: boolean; isSupportDeepThinking: boolean }>, @Res() res) {
     const aiAgent = await this.aiAgentsService.update(id, body);
     if (aiAgent) {
       return res.status(HttpStatus.OK).json({

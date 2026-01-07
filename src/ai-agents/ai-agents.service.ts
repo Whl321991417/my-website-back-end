@@ -10,8 +10,10 @@ export class AiAgentsService {
     private aiAgentsRepository: Repository<AiAgent>,
   ) { }
 
-  async findAll(): Promise<AiAgent[]> {
+  async findAll(onlyActive?: boolean): Promise<AiAgent[]> {
+    const where = onlyActive ? { isActive: true } : {};
     return this.aiAgentsRepository.find({
+      where,
       order: {
         createdAt: 'DESC',
       },

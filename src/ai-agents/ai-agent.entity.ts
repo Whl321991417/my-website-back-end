@@ -23,6 +23,24 @@ export class AiAgent {
   @Column({ default: true })
   isActive: boolean;
 
+  @Column({ nullable: true })
+  baseUrl: string;
+
+  @Column({ nullable: true })
+  accessKey: string;
+
+  @Column()
+  appID: string;
+
+  @Column({ default: false })
+  isSupportFileUpload: boolean;
+
+  @Column({ default: false })
+  isSupportImageUpload: boolean;
+
+  @Column({ default: false })
+  isSupportDeepThinking: boolean;
+
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
 
