@@ -5,40 +5,40 @@ import { extname } from 'path';
 import { ImagesService } from './images.service';
 import { ApiTags, ApiOperation, ApiBody, ApiOkResponse, ApiNotFoundResponse, ApiConsumes, ApiBody as ApiBodyDoc } from '@nestjs/swagger';
 
-@ApiTags('images')
-@Controller('api/images')
-export class ImagesController {
+@ApiTags('files')
+@Controller('api/files')
+export class FilesController {
   constructor(private readonly imagesService: ImagesService) {}
 
-  @ApiOperation({ summary: 'Get all images' })
+  @ApiOperation({ summary: 'Get all files' })
   @Get()
-  async getAllImages(@Res() res) {
-    const images = await this.imagesService.findAll();
+  async getAllFiles(@Res() res) {
+    const files = await this.imagesService.findAll();
     return res.status(HttpStatus.OK).json({
-      message: 'Images retrieved successfully',
-      images,
+      message: 'Files retrieved successfully',
+      files,
     });
   }
 
-  @ApiOperation({ summary: 'Get image by ID' })
-  @ApiOkResponse({ description: 'Image retrieved successfully' })
-  @ApiNotFoundResponse({ description: 'Image not found' })
+  @ApiOperation({ summary: 'Get file by ID' })
+  @ApiOkResponse({ description: 'File retrieved successfully' })
+  @ApiNotFoundResponse({ description: 'File not found' })
   @Get(':id')
-  async getImageById(@Param('id') id: number, @Res() res) {
-    const image = await this.imagesService.findById(id);
-    if (image) {
+  async getFileById(@Param('id') id: number, @Res() res) {
+    const file = await this.imagesService.findById(id);
+    if (file) {
       return res.status(HttpStatus.OK).json({
-        message: 'Image retrieved successfully',
-        image,
+        message: 'File retrieved successfully',
+        file,
       });
     } else {
       return res.status(HttpStatus.NOT_FOUND).json({
-        message: 'Image not found',
+        message: 'File not found',
       });
     }
   }
 
-  @ApiOperation({ summary: 'Upload image' })
+  @ApiOperation({ summary: 'Upload file' })
   @ApiConsumes('multipart/form-data')
   @ApiBodyDoc({
     schema: {
@@ -62,15 +62,15 @@ export class ImagesController {
       },
     }),
   }))
-  async uploadImage(@UploadedFile() file, @Res() res) {
+  async uploadFile(@UploadedFile() file, @Res() res) {
     if (!file) {
       return res.status(HttpStatus.BAD_REQUEST).json({
         message: 'No file uploaded',
       });
     }
 
-    // 保存图片信息到数据库
-    const imageData = {
+    // 保存文件信息到数据库
+    const fileData = {
       fileName: file.filename,
       filePath: file.path,
       fileSize: file.size,
@@ -78,16 +78,16 @@ export class ImagesController {
       url: `/uploads/${file.filename}`,
     };
 
-    const savedImage = await this.imagesService.create(imageData);
+    const savedFile = await this.imagesService.create(fileData);
     return res.status(HttpStatus.CREATED).json({
-      message: 'Image uploaded successfully',
-      image: savedImage,
+      message: 'File uploaded successfully',
+      file: savedFile,
     });
   }
 
-  @ApiOperation({ summary: 'Update image' })
+  @ApiOperation({ summary: 'Update file' })
   @ApiBody({
-    description: 'Image data to update',
+    description: 'File data to update',
     schema: {
       type: 'object',
       properties: {
@@ -101,33 +101,33 @@ export class ImagesController {
     },
   })
   @Put(':id')
-  async updateImage(@Param('id') id: number, @Body() body, @Res() res) {
-    const image = await this.imagesService.update(id, body);
-    if (image) {
+  async updateFile(@Param('id') id: number, @Body() body, @Res() res) {
+    const file = await this.imagesService.update(id, body);
+    if (file) {
       return res.status(HttpStatus.OK).json({
-        message: 'Image updated successfully',
-        image,
+        message: 'File updated successfully',
+        file,
       });
     } else {
       return res.status(HttpStatus.NOT_FOUND).json({
-        message: 'Image not found',
+        message: 'File not found',
       });
     }
   }
 
-  @ApiOperation({ summary: 'Delete image' })
-  @ApiOkResponse({ description: 'Image deleted successfully' })
-  @ApiNotFoundResponse({ description: 'Image not found' })
+  @ApiOperation({ summary: 'Delete file' })
+  @ApiOkResponse({ description: 'File deleted successfully' })
+  @ApiNotFoundResponse({ description: 'File not found' })
   @Delete(':id')
-  async deleteImage(@Param('id') id: number, @Res() res) {
+  async deleteFile(@Param('id') id: number, @Res() res) {
     const success = await this.imagesService.delete(id);
     if (success) {
       return res.status(HttpStatus.OK).json({
-        message: 'Image deleted successfully',
+        message: 'File deleted successfully',
       });
     } else {
       return res.status(HttpStatus.NOT_FOUND).json({
-        message: 'Image not found',
+        message: 'File not found',
       });
     }
   }
