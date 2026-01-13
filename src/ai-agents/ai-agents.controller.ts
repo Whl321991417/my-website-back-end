@@ -35,6 +35,22 @@ export class AiAgentsController {
     }
   }
 
+  @ApiOperation({ summary: 'Get AI agent by appID' })
+  @Get('appid/:appid')
+  async getAiAgentByAppID(@Param('appid') appid: string, @Res() res) {
+    const aiAgent = await this.aiAgentsService.findByAppID(appid);
+    if (aiAgent) {
+      return res.status(HttpStatus.OK).json({
+        message: 'AI agent retrieved successfully',
+        aiAgent,
+      });
+    } else {
+      return res.status(HttpStatus.NOT_FOUND).json({
+        message: 'AI agent not found',
+      });
+    }
+  }
+
   @ApiOperation({ summary: 'Create AI agent' })
   @ApiBody({
     description: 'AI agent data',

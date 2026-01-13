@@ -24,6 +24,10 @@ export class AiAgentsService {
     return this.aiAgentsRepository.findOne({ where: { id } });
   }
 
+  async findByAppID(appID: string): Promise<AiAgent | null> {
+    return this.aiAgentsRepository.findOne({ where: { appID } });
+  }
+
   async create(aiAgentData: Partial<AiAgent>): Promise<AiAgent> {
     const aiAgent = this.aiAgentsRepository.create(aiAgentData);
     return this.aiAgentsRepository.save(aiAgent);
