@@ -14,6 +14,7 @@ import { AiAgentsModule } from './ai-agents/ai-agents.module';
 import { NavMenusModule } from './nav-menus/nav-menus.module';
 import { TagsModule } from './tags/tags.module';
 import { CustomerServiceModule } from './customer-service/customer-service.module';
+import { ConfigurationsModule } from './configurations/configurations.module';
 import { User } from './users/user.entity';
 import { HomeModule } from './home-modules/home-module.entity';
 import { Image } from './images/image.entity';
@@ -22,6 +23,7 @@ import { AiAgent } from './ai-agents/ai-agent.entity';
 import { NavMenu } from './nav-menus/nav-menu.entity';
 import { Tag } from './tags/tag.entity';
 import { CustomerService } from './customer-service/customer-service.entity';
+import { Configuration } from './configurations/configuration.entity';
 
 @Module({
   imports: [
@@ -37,7 +39,7 @@ import { CustomerService } from './customer-service/customer-service.entity';
       username: process.env.DB_USERNAME || 'my-website',
       password: process.env.DB_PASSWORD || 'root123',
       database: process.env.DB_DATABASE || 'my-website',
-      entities: [User, HomeModule, Image, Blog, AiAgent, NavMenu, Tag, CustomerService],
+      entities: [User, HomeModule, Image, Blog, AiAgent, NavMenu, Tag, CustomerService, Configuration],
       synchronize: true,
       // 添加连接池配置
       poolSize: 10,
@@ -59,6 +61,7 @@ import { CustomerService } from './customer-service/customer-service.entity';
     NavMenusModule,
     TagsModule,
     CustomerServiceModule,
+    ConfigurationsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
