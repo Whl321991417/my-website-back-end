@@ -27,10 +27,15 @@ import { Configuration } from './configurations/configuration.entity';
 
 @Module({
   imports: [
-    // 加载环境变量配置
+    // 加载环境变量配置，根据NODE_ENV加载不同的.env文件
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: '.env',
+      envFilePath: [
+        // 先加载默认的.env文件
+        '.env',
+        // 然后根据NODE_ENV加载对应的.env文件，后者会覆盖前者的同名变量
+        `.env.${process.env.NODE_ENV || 'development'}`
+      ],
     }),
     TypeOrmModule.forRoot({
       type: process.env.DB_TYPE as any || 'mysql',
