@@ -87,8 +87,8 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
-  // 启动服务
-  await app.listen(PORT);
+  // 启动服务，绑定到0.0.0.0以接受外部连接
+  await app.listen(PORT, '0.0.0.0');
 
   // 输出启动信息
   const protocol = isProduction ? 'https' : 'http';
