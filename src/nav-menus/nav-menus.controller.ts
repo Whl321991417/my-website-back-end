@@ -5,7 +5,7 @@ import { ApiTags, ApiOperation, ApiBody, ApiOkResponse, ApiNotFoundResponse } fr
 @ApiTags('nav-menus')
 @Controller('api/nav-menus')
 export class NavMenusController {
-  constructor(private readonly navMenusService: NavMenusService) {}
+  constructor(private readonly navMenusService: NavMenusService) { }
 
   @ApiOperation({ summary: 'Get all navigation menus' })
   @Get()
@@ -54,10 +54,11 @@ export class NavMenusController {
         name: { type: 'string' },
         key: { type: 'string' },
         route: { type: 'string' },
+        url: { type: 'string' },
         isActive: { type: 'boolean', default: true },
         order: { type: 'number', default: 0 },
       },
-      required: ['name', 'key', 'route'],
+      required: ['name', 'key'],
     },
   })
   @Post()
@@ -78,6 +79,7 @@ export class NavMenusController {
         name: { type: 'string' },
         key: { type: 'string' },
         route: { type: 'string' },
+        url: { type: 'string' },
         isActive: { type: 'boolean' },
         order: { type: 'number' },
       },

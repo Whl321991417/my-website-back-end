@@ -11,8 +11,11 @@ export class NavMenu {
   @Column()
   key: string;
 
-  @Column()
+  @Column({ nullable: true })
   route: string;
+
+  @Column({ nullable: true })
+  url: string;
 
   @Column({ default: true })
   isActive: boolean;
