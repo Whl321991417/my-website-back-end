@@ -15,6 +15,7 @@ import { NavMenusModule } from './nav-menus/nav-menus.module';
 import { TagsModule } from './tags/tags.module';
 import { CustomerServiceModule } from './customer-service/customer-service.module';
 import { ConfigurationsModule } from './configurations/configurations.module';
+import { EducationModule } from './education/education.module';
 import { User } from './users/user.entity';
 import { HomeModule } from './home-modules/home-module.entity';
 import { Image } from './images/image.entity';
@@ -24,6 +25,11 @@ import { NavMenu } from './nav-menus/nav-menu.entity';
 import { Tag } from './tags/tag.entity';
 import { CustomerService } from './customer-service/customer-service.entity';
 import { Configuration } from './configurations/configuration.entity';
+import { Subject } from './education/entities/subject.entity';
+import { Teacher } from './education/entities/teacher.entity';
+import { Class } from './education/entities/class.entity';
+import { Student } from './education/entities/student.entity';
+import { Exam } from './education/entities/exam.entity';
 
 @Module({
   imports: [
@@ -32,7 +38,9 @@ import { Configuration } from './configurations/configuration.entity';
       isGlobal: true,
       envFilePath: '.env',
     }),
+    // 主数据库连接配置
     TypeOrmModule.forRoot({
+      name: 'default',
       type: process.env.DB_TYPE as any || 'mysql',
       host: process.env.DB_HOST || '123.60.102.168',
       port: parseInt(process.env.DB_PORT || '3306', 10),
@@ -40,6 +48,23 @@ import { Configuration } from './configurations/configuration.entity';
       password: process.env.DB_PASSWORD || 'root123',
       database: process.env.DB_DATABASE || 'my-website',
       entities: [User, HomeModule, Image, Blog, AiAgent, NavMenu, Tag, CustomerService, Configuration],
+      synchronize: true,
+      // 添加连接池配置
+      poolSize: 10,
+      // 启用详细日志，便于调试
+      logging: true,
+      logger: 'advanced-console',
+    }),
+    // 教育系统数据库连接配置
+    TypeOrmModule.forRoot({
+      name: 'education',
+      type: 'mysql',
+      host: process.env.EDUCATION_DB_HOST || '123.60.102.168',
+      port: parseInt(process.env.EDUCATION_DB_PORT || '3306', 10),
+      username: process.env.EDUCATION_DB_USERNAME || 'my_education',
+      password: process.env.EDUCATION_DB_PASSWORD || 'my_education',
+      database: process.env.EDUCATION_DB_DATABASE || 'my_education',
+      entities: [Subject, Teacher, Class, Student, Exam],
       synchronize: true,
       // 添加连接池配置
       poolSize: 10,
@@ -62,6 +87,7 @@ import { Configuration } from './configurations/configuration.entity';
     TagsModule,
     CustomerServiceModule,
     ConfigurationsModule,
+    EducationModule,
   ],
   controllers: [AppController],
   providers: [AppService],
