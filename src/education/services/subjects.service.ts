@@ -1,13 +1,15 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Subject } from '../entities/subject.entity';
+import { KnowledgePointsService } from './knowledge-points.service';
 
 @Injectable()
 export class SubjectsService {
   constructor(
     @InjectRepository(Subject, 'education')
     private subjectsRepository: Repository<Subject>,
+    private knowledgePointsService: KnowledgePointsService,
   ) { }
 
   // 创建学科
@@ -39,6 +41,18 @@ export class SubjectsService {
 
   // 删除学科
   async remove(id: number): Promise<void> {
+    // 检查学科是否存在
+    const subject = await this.findOne(id);
+
+    // 检查是否有关联的知识点
+    const knowledgePoints = await this.knowledgePointsService.findBySubjectId(id);
+    if (knowledgePoints.length > 0) {
+      throw new ConflictException(
+        `Cannot delete subject "${subject.name}" because it has ${knowledgePoints.length} associated knowledge points. Please delete all associated knowledge points first.`
+      );
+    }
+
+    // 删除学科
     const result = await this.subjectsRepository.delete(id);
     if (result.affected === 0) {
       throw new NotFoundException(`Subject with ID ${id} not found`);

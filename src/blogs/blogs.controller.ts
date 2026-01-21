@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Res, HttpStatus, Get, Param, Put, Delete } from '@nestjs/common';
+import { Controller, Post, Body, Res, HttpStatus, Get, Param, Put, Delete, Query } from '@nestjs/common';
 import { BlogsService } from './blogs.service';
 import { ApiTags, ApiOperation, ApiBody, ApiOkResponse, ApiBearerAuth } from '@nestjs/swagger';
 
@@ -35,11 +35,16 @@ export class BlogsController {
 
   @ApiOperation({ summary: 'Get all blogs' })
   @Get()
-  async getAllBlogs(@Res() res) {
-    const blogs = await this.blogsService.findAll();
+  async getAllBlogs(@Res() res, @Query('page') page: number = 1, @Query('limit') limit: number = 10) {
+    const { blogs, total } = await this.blogsService.findAll(Number(page), Number(limit));
+    const totalPages = Math.ceil(total / Number(limit));
     return res.status(HttpStatus.OK).json({
       message: 'Blogs retrieved successfully',
       blogs,
+      total,
+      page: Number(page),
+      limit: Number(limit),
+      totalPages
     });
   }
 

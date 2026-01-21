@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
+import { KnowledgePoint } from './knowledge-point.entity';
 
 @Entity('subjects')
 export class Subject {
@@ -13,6 +14,9 @@ export class Subject {
 
   @Column({ default: true })
   isActive: boolean;
+
+  @OneToMany(() => KnowledgePoint, knowledgePoint => knowledgePoint.subject)
+  knowledgePoints: KnowledgePoint[];
 
   @CreateDateColumn()
   createdAt: Date;

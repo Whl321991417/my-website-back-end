@@ -16,6 +16,7 @@ import { TagsModule } from './tags/tags.module';
 import { CustomerServiceModule } from './customer-service/customer-service.module';
 import { ConfigurationsModule } from './configurations/configurations.module';
 import { EducationModule } from './education/education.module';
+import { CaseLibrariesModule } from './case-libraries/case-libraries.module';
 import { User } from './users/user.entity';
 import { HomeModule } from './home-modules/home-module.entity';
 import { Image } from './images/image.entity';
@@ -25,11 +26,13 @@ import { NavMenu } from './nav-menus/nav-menu.entity';
 import { Tag } from './tags/tag.entity';
 import { CustomerService } from './customer-service/customer-service.entity';
 import { Configuration } from './configurations/configuration.entity';
+import { CaseLibrary } from './case-libraries/case-library.entity';
 import { Subject } from './education/entities/subject.entity';
 import { Teacher } from './education/entities/teacher.entity';
 import { Class } from './education/entities/class.entity';
 import { Student } from './education/entities/student.entity';
 import { Exam } from './education/entities/exam.entity';
+import { KnowledgePoint } from './education/entities/knowledge-point.entity';
 
 @Module({
   imports: [
@@ -47,7 +50,7 @@ import { Exam } from './education/entities/exam.entity';
       username: process.env.DB_USERNAME || 'my-website',
       password: process.env.DB_PASSWORD || 'root123',
       database: process.env.DB_DATABASE || 'my-website',
-      entities: [User, HomeModule, Image, Blog, AiAgent, NavMenu, Tag, CustomerService, Configuration],
+      entities: [User, HomeModule, Image, Blog, AiAgent, NavMenu, Tag, CustomerService, Configuration, CaseLibrary],
       synchronize: true,
       // 添加连接池配置
       poolSize: 10,
@@ -64,7 +67,7 @@ import { Exam } from './education/entities/exam.entity';
       username: process.env.EDUCATION_DB_USERNAME || 'my_education',
       password: process.env.EDUCATION_DB_PASSWORD || 'my_education',
       database: process.env.EDUCATION_DB_DATABASE || 'my_education',
-      entities: [Subject, Teacher, Class, Student, Exam],
+      entities: [Subject, Teacher, Class, Student, Exam, KnowledgePoint],
       synchronize: true,
       // 添加连接池配置
       poolSize: 10,
@@ -88,6 +91,7 @@ import { Exam } from './education/entities/exam.entity';
     CustomerServiceModule,
     ConfigurationsModule,
     EducationModule,
+    CaseLibrariesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

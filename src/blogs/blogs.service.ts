@@ -16,13 +16,16 @@ export class BlogsService {
     return this.blogRepository.save(blog);
   }
 
-  // 获取所有博客
-  async findAll(): Promise<Blog[]> {
-    return this.blogRepository.find({
+  // 获取所有博客（带分页）
+  async findAll(page: number = 1, limit: number = 10): Promise<{ blogs: Blog[]; total: number }> {
+    const [blogs, total] = await this.blogRepository.findAndCount({
       order: {
         createdAt: 'DESC',
       },
+      skip: (page - 1) * limit,
+      take: limit,
     });
+    return { blogs, total };
   }
 
   // 根据ID获取博客
