@@ -13,6 +13,9 @@ export class Class {
   @Column({ length: 200, nullable: true })
   description: string;
 
+  @Column({ type: 'json', nullable: true })
+  subjectIds: number[];
+
   @Column({ default: true })
   isActive: boolean;
 

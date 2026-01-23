@@ -33,6 +33,7 @@ import { Class } from './education/entities/class.entity';
 import { Student } from './education/entities/student.entity';
 import { Exam } from './education/entities/exam.entity';
 import { KnowledgePoint } from './education/entities/knowledge-point.entity';
+import { ExamRecord } from './education/entities/exam-record.entity';
 
 @Module({
   imports: [
@@ -67,7 +68,7 @@ import { KnowledgePoint } from './education/entities/knowledge-point.entity';
       username: process.env.EDUCATION_DB_USERNAME || 'my_education',
       password: process.env.EDUCATION_DB_PASSWORD || 'my_education',
       database: process.env.EDUCATION_DB_DATABASE || 'my_education',
-      entities: [Subject, Teacher, Class, Student, Exam, KnowledgePoint],
+      entities: [Subject, Teacher, Class, Student, Exam, KnowledgePoint, ExamRecord],
       synchronize: true,
       // 添加连接池配置
       poolSize: 10,

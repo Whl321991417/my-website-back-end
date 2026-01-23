@@ -34,4 +34,14 @@ export class ExamsService {
   remove(id: number) {
     return this.examsRepository.delete(id);
   }
+
+  // 根据学科ID获取试卷
+  findBySubjects(subjectIds: number[]) {
+    if (!subjectIds || subjectIds.length === 0) {
+      return [];
+    }
+    return this.examsRepository.createQueryBuilder('exam')
+      .where('exam.subjectId IN (:...subjectIds)', { subjectIds })
+      .getMany();
+  }
 }

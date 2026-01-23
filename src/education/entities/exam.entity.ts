@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, BeforeInsert, BeforeUpdate } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, BeforeInsert, BeforeUpdate, ManyToOne, JoinColumn } from 'typeorm';
 import { ExamType } from '../enums/exam-type.enum';
+import { Subject } from './subject.entity';
 
 @Entity('exams')
 export class Exam {
@@ -14,6 +15,13 @@ export class Exam {
 
   @Column({ type: 'json' })
   content: Record<string, any>;
+
+  @ManyToOne(() => Subject, { nullable: true, onDelete: 'SET NULL' })
+  @JoinColumn({ name: 'subjectId' })
+  subject: Subject;
+
+  @Column({ nullable: true })
+  subjectId: number;
 
   @Column({ default: true })
   isActive: boolean;
