@@ -1,6 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { ExamsService } from '../services/exams.service';
 import { ResponseUtil } from '../../utils/response-format';
+import { CreateExamDto, UpdateExamDto } from '../exams/dto/exam.dto';
 
 @Controller('api/education/exams')
 export class ExamsController {
@@ -8,7 +9,7 @@ export class ExamsController {
 
   // 创建试卷
   @Post()
-  async create(@Body() createExamDto: any) {
+  async create(@Body() createExamDto: CreateExamDto) {
     const data = await this.examsService.create(createExamDto);
     return ResponseUtil.created(data, 'Exam created successfully');
   }
@@ -43,7 +44,7 @@ export class ExamsController {
 
   // 更新试卷
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateExamDto: any) {
+  async update(@Param('id') id: string, @Body() updateExamDto: UpdateExamDto) {
     // 参数验证，确保id是有效的数字
     const examId = parseInt(id, 10);
     if (isNaN(examId)) {

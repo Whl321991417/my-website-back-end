@@ -26,8 +26,24 @@ export class ExamsService {
   }
 
   // 更新试卷
-  update(id: number, updateExamDto: any) {
-    return this.examsRepository.update(id, updateExamDto);
+  async update(id: number, updateExamDto: any): Promise<Exam> {
+    // 先更新试卷
+    const updateResult = await this.examsRepository.update(id, updateExamDto);
+
+    // 检查是否更新成功
+    if (updateResult.affected === 0) {
+      throw new Error(`Exam with ID ${id} not found`);
+    }
+
+    // 然后返回更新后的试卷
+    const updatedExam = await this.examsRepository.findOneBy({ id });
+
+    // 确保返回的是Exam对象
+    if (!updatedExam) {
+      throw new Error(`Exam with ID ${id} not found after update`);
+    }
+
+    return updatedExam;
   }
 
   // 删除试卷
